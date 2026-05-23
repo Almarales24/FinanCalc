@@ -1,1 +1,100 @@
-<p>calculadora-prestamos works!</p>
+<div class="calculadora-container">
+  <div class="calculadora-card">
+    <h1>Calculadora de Préstamos</h1>
+
+    <form [formGroup]="formulario">
+      <div class="form-group">
+        <label for="monto">Monto del Préstamo ($)</label>
+        <input
+          id="monto"
+          type="number"
+          formControlName="monto"
+          placeholder="Ingresa el monto"
+          step="100"
+          min="0"
+        />
+        <span
+          class="error"
+          *ngIf="
+            formulario.get('monto')?.invalid &&
+            formulario.get('monto')?.touched
+          "
+        >
+          El monto es requerido y debe ser mayor a 0
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="tasaInteres">Tasa de Interés Anual (%)</label>
+        <input
+          id="tasaInteres"
+          type="number"
+          formControlName="tasaInteres"
+          placeholder="Ej: 5.5"
+          step="0.1"
+          min="0"
+        />
+        <span
+          class="error"
+          *ngIf="
+            formulario.get('tasaInteres')?.invalid &&
+            formulario.get('tasaInteres')?.touched
+          "
+        >
+          La tasa de interés es requerida
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="meses">Plazo (meses)</label>
+        <input
+          id="meses"
+          type="number"
+          formControlName="meses"
+          placeholder="Ej: 60"
+          step="1"
+          min="1"
+        />
+        <span
+          class="error"
+          *ngIf="
+            formulario.get('meses')?.invalid &&
+            formulario.get('meses')?.touched
+          "
+        >
+          El plazo es requerido y debe ser mayor a 0
+        </span>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn-calcular"
+          (click)="calcular()"
+          [disabled]="formulario.invalid"
+        >
+          Calcular
+        </button>
+        <button type="button" class="btn-limpiar" (click)="limpiar()">
+          Limpiar
+        </button>
+      </div>
+    </form>
+
+    <div class="resultado" *ngIf="resultado">
+      <h2>Resultado del Cálculo</h2>
+      <div class="resultado-item">
+        <span class="etiqueta">Cuota Mensual:</span>
+        <span class="valor">${{ resultado.cuotaMensual.toFixed(2) }}</span>
+      </div>
+      <div class="resultado-item">
+        <span class="etiqueta">Total a Pagar:</span>
+        <span class="valor">${{ resultado.totalAPagar.toFixed(2) }}</span>
+      </div>
+      <div class="resultado-item">
+        <span class="etiqueta">Total Intereses:</span>
+        <span class="valor">${{ resultado.totalInteres.toFixed(2) }}</span>
+      </div>
+    </div>
+  </div>
+</div>
