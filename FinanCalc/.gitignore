@@ -11,6 +11,38 @@
 npm-debug.log
 yarn-error.log
 
+# Sensitive and local environment files
+.env
+.env.*
+.env.local
+.env.*.local
+*.local
+*.secret
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.jks
+*.keystore
+*.der
+*.p7b
+*.asc
+*.bak
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+*.tgz
+*.zip
+*.7z
+*.rar
+secrets/
+private/
+credentials/
+.ssh/
+
 # IDEs and editors
 .idea/
 .project
