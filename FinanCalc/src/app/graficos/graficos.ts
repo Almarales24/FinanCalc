@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import { FinanzasService } from '../services/finanzas';
+import { CalculadoraService } from '../services/calculadora.service';
 import { Subscription } from 'rxjs';
 
 Chart.register(...registerables);
@@ -12,36 +13,50 @@ Chart.register(...registerables);
   imports: [CommonModule],
   templateUrl: './graficos.html',
 })
-export class GraficosComponent implements OnInit, OnDestroy {
-  private grafico: Chart | null = null;
-  private suscripcion: Subscription | null = null;
+export class GraficosComponent implements AfterViewInit, OnDestroy {
+  private graficoGastos: Chart | null = null;
+  private graficoPrestamo: Chart | null = null;
+  private suscripcionFinanzas: Subscription | null = null;
+  private suscripcionPrestamo: Subscription | null = null;
 
-  constructor(private finanzasService: FinanzasService) {}
+  constructor(
+    private finanzasService: FinanzasService,
+    private calculadoraService: CalculadoraService
+  ) {}
 
-  ngOnInit(): void {
-    this.suscripcion = this.finanzasService.movimientos$.subscribe(() => {
-      this.actualizarGrafico();
+  ngAfterViewInit(): void {
+    this.actualizarGraficoGastos();
+
+    this.suscripcionFinanzas = this.finanzasService.movimientos$.subscribe(() => {
+      this.actualizarGraficoGastos();
+    });
+
+    this.suscripcionPrestamo = this.calculadoraService.resultado$.subscribe(resultado => {
+      if (resultado) {
+        const capital = resultado.totalPagar - resultado.totalIntereses;
+        this.actualizarGraficoPrestamo(capital, resultado.totalIntereses);
+      }
     });
   }
 
-  actualizarGrafico(): void {
+  actualizarGraficoGastos(): void {
     const movimientos = this.finanzasService.getMovimientos();
-    const gastos = movimientos.filter(m => m.tipo === 'gasto');
+    const gastos = movimientos.filter((m: any) => m.tipo === 'gasto');
 
     const categorias: Record<string, number> = {};
-    gastos.forEach(g => {
+    gastos.forEach((g: any) => {
       categorias[g.categoria] = (categorias[g.categoria] || 0) + g.monto;
     });
 
     const labels = Object.keys(categorias);
     const data = Object.values(categorias);
 
-    if (this.grafico) this.grafico.destroy();
+    if (this.graficoGastos) this.graficoGastos.destroy();
 
     const canvas = document.getElementById('graficaGastos') as HTMLCanvasElement;
     if (!canvas) return;
 
-    this.grafico = new Chart(canvas, {
+    this.graficoGastos = new Chart(canvas, {
       type: 'doughnut',
       data: {
         labels,
@@ -57,8 +72,32 @@ export class GraficosComponent implements OnInit, OnDestroy {
     });
   }
 
+  actualizarGraficoPrestamo(capital: number, intereses: number): void {
+    if (this.graficoPrestamo) this.graficoPrestamo.destroy();
+
+    const canvas2 = document.getElementById('graficaPrestamo') as HTMLCanvasElement;
+    if (!canvas2) return;
+
+    this.graficoPrestamo = new Chart(canvas2, {
+      type: 'bar',
+      data: {
+        labels: ['Total'],
+        datasets: [
+          { label: 'Capital', data: [capital], backgroundColor: '#3B82F6' },
+          { label: 'Intereses', data: [intereses], backgroundColor: '#EF4444' }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  }
+
   ngOnDestroy(): void {
-    this.grafico?.destroy();
-    this.suscripcion?.unsubscribe();
+    this.graficoGastos?.destroy();
+    this.graficoPrestamo?.destroy();
+    this.suscripcionFinanzas?.unsubscribe();
+    this.suscripcionPrestamo?.unsubscribe();
   }
 }
