@@ -81,6 +81,17 @@ get balanceMes() {
     this.montoForm = 0;
   }
 
+
+  editar(m: Movimiento) {
+  this.tipoForm = m.tipo;
+  this.descripcionForm = m.descripcion;
+  this.categoriaForm = m.categoria;
+  this.montoForm = m.monto;
+  this.fechaForm = m.fecha;
+  this.eliminar(m.id);
+}
+
+
   eliminar(id: number) {
     this.movimientos = this.movimientos.filter(m => m.id !== id);
   }
