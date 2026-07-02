@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FinanzasService } from '../services/finanzas';
 
 export interface Movimiento {
   id: number;
@@ -18,7 +19,8 @@ export interface Movimiento {
   templateUrl: './finanzas-personales.html',
 })
 export class FinanzasPersonalesComponent {
-  movimientos: Movimiento[] = [];
+
+movimientos: Movimiento[] = [];
   nextId = 1;
 
 
@@ -32,7 +34,9 @@ export class FinanzasPersonalesComponent {
 
   categoriasGasto = ['Alimentación', 'Transporte', 'Vivienda', 'Salud', 'Educación', 'Entretenimiento', 'Ropa', 'Otros'];
   categoriasIngreso = ['Salario', 'Freelance', 'Inversiones', 'Negocio', 'Otros'];
-
+  constructor(private finanzasService: FinanzasService) {
+  this.movimientos = this.finanzasService.getMovimientos();
+}
 
   get categorias() {
     return this.tipoForm === 'ingreso' ? this.categoriasIngreso : this.categoriasGasto;
