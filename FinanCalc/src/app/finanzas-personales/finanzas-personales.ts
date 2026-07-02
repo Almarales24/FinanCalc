@@ -21,14 +21,18 @@ export class FinanzasPersonalesComponent {
   movimientos: Movimiento[] = [];
   nextId = 1;
 
+
   tipoForm: 'ingreso' | 'gasto' = 'ingreso';
   descripcionForm = '';
   categoriaForm = '';
   montoForm: number = 0;
   fechaForm = new Date().toISOString().split('T')[0];
+  mesFiltro: string = new Date().toISOString().slice(0, 7);
+
 
   categoriasGasto = ['Alimentación', 'Transporte', 'Vivienda', 'Salud', 'Educación', 'Entretenimiento', 'Ropa', 'Otros'];
   categoriasIngreso = ['Salario', 'Freelance', 'Inversiones', 'Negocio', 'Otros'];
+
 
   get categorias() {
     return this.tipoForm === 'ingreso' ? this.categoriasIngreso : this.categoriasGasto;
@@ -45,6 +49,22 @@ export class FinanzasPersonalesComponent {
   get balance() {
     return this.totalIngresos - this.totalGastos;
   }
+
+  get movimientosFiltrados() {
+  return this.movimientos.filter(m => m.fecha.startsWith(this.mesFiltro));
+}
+
+get totalIngresosMes() {
+  return this.movimientosFiltrados.filter(m => m.tipo === 'ingreso').reduce((s, m) => s + m.monto, 0);
+}
+
+get totalGastosMes() {
+  return this.movimientosFiltrados.filter(m => m.tipo === 'gasto').reduce((s, m) => s + m.monto, 0);
+}
+
+get balanceMes() {
+  return this.totalIngresosMes - this.totalGastosMes;
+}
 
   agregar() {
     if (!this.descripcionForm || !this.categoriaForm || this.montoForm <= 0) return;
@@ -69,3 +89,4 @@ export class FinanzasPersonalesComponent {
     this.categoriaForm = '';
   }
 }
+
