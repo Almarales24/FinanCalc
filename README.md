@@ -1,4 +1,4 @@
-# 💰 FinanCalc
+#  FinanCalc
 
 FinanCalc es una aplicación web desarrollada con **Angular 21** que permite realizar cálculos financieros relacionados con préstamos. La aplicación calcula automáticamente la cuota mensual, el total a pagar y el total de intereses a partir del monto solicitado, la tasa de interés y el plazo del préstamo.
 
@@ -6,7 +6,7 @@ Su arquitectura está separada en componentes, servicios y modelos, facilitando 
 
 ---
 
-# 📌 Características
+#  Características
 
 - Cálculo de préstamos mediante el método de amortización.
 - Cálculo automático de:
@@ -21,7 +21,7 @@ Su arquitectura está separada en componentes, servicios y modelos, facilitando 
 
 ---
 
-# 🛠 Tecnologías utilizadas
+#  Tecnologías utilizadas
 
 - Angular 21
 - TypeScript
@@ -34,7 +34,7 @@ Su arquitectura está separada en componentes, servicios y modelos, facilitando 
 
 ---
 
-# 📂 Estructura del proyecto
+#  Estructura del proyecto
 
 ```
 src/
@@ -62,7 +62,7 @@ src/
 
 ---
 
-# ⚙️ Instalación
+#  Instalación
 
 Clonar el repositorio
 
@@ -84,7 +84,7 @@ npm install
 
 ---
 
-# ▶️ Ejecutar el proyecto
+#  Ejecutar el proyecto
 
 Iniciar el servidor de desarrollo
 
@@ -106,7 +106,7 @@ http://localhost:4200
 
 ---
 
-# 🧮 Funcionamiento
+#  Funcionamiento
 
 El usuario debe ingresar:
 
@@ -124,7 +124,7 @@ El resultado queda almacenado en el navegador utilizando **LocalStorage**, permi
 
 ---
 
-# 🏗 Arquitectura
+#  Arquitectura
 
 El proyecto sigue una arquitectura modular basada en Angular:
 
@@ -152,7 +152,7 @@ Definen las estructuras de datos utilizadas por la aplicación.
 
 ---
 
-# 📐 Fórmula utilizada
+#  Fórmula utilizada
 
 Para calcular la cuota mensual se utiliza la fórmula estándar de amortización:
 
@@ -168,7 +168,7 @@ Donde:
 
 ---
 
-# 💾 Persistencia
+#  Persistencia
 
 La aplicación almacena el último cálculo utilizando:
 
@@ -186,7 +186,7 @@ Esto permite recuperar automáticamente el último resultado calculado.
 
 ---
 
-# 📖 Scripts disponibles
+#  Scripts disponibles
 
 Instalar dependencias
 
@@ -220,12 +220,12 @@ npm test
 
 ---
 
-# 👨‍💻 Autor
+#  Autor
 
 Proyecto desarrollado como una calculadora financiera utilizando Angular 21 y TypeScript con una arquitectura modular enfocada en buenas prácticas de desarrollo frontend.
 
 ---
 
-# 📄 Licencia
+#  Licencia
 
 Este proyecto se distribuye únicamente con fines académicos y de aprendizaje.
